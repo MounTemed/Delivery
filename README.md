@@ -40,7 +40,7 @@ A sample Go web application to demonstrate a full CI/CD pipeline using Docker, A
 1.  Configure your servers in the inventory file `ansible/inventory/hosts.yaml`.
 2.  Run the main deployment playbook:
   ```bash
-  ansible-playbook ansible/playbook/delivery/master.yaml
+  ansible-playbook ansible/playbook/build/master.yaml
   ```
 
 ## ⚙️ CI/CD
