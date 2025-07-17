@@ -1,0 +1,5 @@
+services:
+  deploy:
+    image: docker.io/laimick/delivery:latest
+    ports:
+      - 8080:8080

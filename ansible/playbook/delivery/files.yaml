@@ -1,0 +1,12 @@
+- name: Preparation for Launch
+  hosts: all
+
+  tasks:
+    - name: Rebuild and restart Docker containers
+      shell: |
+        cd /usr/develop && \
+        docker compose down && \
+        docker system prune -a -f && \
+        docker compose -f /usr/develop/compose.yaml up -d --build
+      args:
+        executable: /bin/bash

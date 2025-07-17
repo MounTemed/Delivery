@@ -1,0 +1,49 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Docker.hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push images
+        uses: docker/build-push-action@v6
+        with:
+          context: ./images/
+          push: true
+          tags: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/delivery:latest
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Start ansible master.yaml update
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
+        run: ansible-playbook ansible/playbook/delivery/master.yaml

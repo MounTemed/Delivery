@@ -1,0 +1,4 @@
+- name: update system
+  ansible.builtin.import_playbook: ./update.yaml
+- name: copy and start update.sh file
+  ansible.builtin.import_playbook: ./files.yaml

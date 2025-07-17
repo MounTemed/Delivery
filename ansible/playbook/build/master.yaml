@@ -1,0 +1,8 @@
+- name: update system
+  ansible.builtin.import_playbook: ./update.yaml
+- name: install docker
+  ansible.builtin.import_playbook: ./docker.yaml
+- name: Login docker
+  ansible.builtin.import_playbook: ./login.yaml
+- name: Copy and start sh file
+  ansible.builtin.import_playbook: ./files.yaml
